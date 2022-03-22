@@ -9,7 +9,8 @@ const App = () => {
 	const [posts, setPosts] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [currentPage, setCurrentPage] = useState(1); 
-	const [postsPerPage, setPostsPerPage] = useState(10); 
+	const [limit, setLimit] = useState(10);
+  const offset = (currentPage - 1) * limit;
 
   //컴포넌트가 마운트, 업데이트 될 때마다 실행됨 
   useEffect( () => {
@@ -29,18 +30,18 @@ const App = () => {
   console.log(posts);
 
   //현재 페이지 구하기
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const indexOfLastPost = currentPage * limit;
+  const indexOfFirstPost = indexOfLastPost - limit;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
   //페이지 변경
-  const paginate = (pageNumber) => setCurrentPage(pageNumber)
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const setLimited = (number) => setLimit(number);
 
-
- return (
+ return ( 
     <div>
-      <Posts posts={currentPosts} loading={loading} />
-      <Pagination postsPerPage={postsPerPage} totalPosts={posts.length} paginate={paginate}  />
+      <Posts posts={currentPosts} loading={loading} limit={limit} setLimit={setLimit}  />
+      <Pagination limit={limit} totalPosts={posts.length} paginate={paginate}  />
       {/* paginate={paginate} */}
     </div>
    	)
